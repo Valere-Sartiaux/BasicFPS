@@ -20,7 +20,7 @@ public class MapDisplay : MonoBehaviour //Monobehaviour is needed as it interact
         {
             for (int y = 0; y < length; y++)
             {
-                colourArray[x * width + y] = Color.Lerp(Color.black, Color.white, noiseMap[x, y]); //this assigns the colour based on the float value between 1 and 0, 1 being white and 0 being black
+                colourArray[y * width + x] = Color.Lerp(Color.black, Color.white, noiseMap[x, y]); //this assigns the colour based on the float value between 1 and 0, 1 being white and 0 being black
             }
         }
         texture.SetPixels(colourArray); //sets every pixel to it's appropriate colour

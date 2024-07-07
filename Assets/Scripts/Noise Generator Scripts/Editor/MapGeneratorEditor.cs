@@ -10,7 +10,7 @@ public class MapGeneratorEditor : Editor //EDITOR is needed to interact with the
 {
     public override void OnInspectorGUI() //I have no idea what override does
     {
-        MapGenerator mapGen = (MapGenerator)target; //this instances the MapGenerator as "mapGen" and does some more UI trolling idk, i think it adds the cusotm button in the mapGenerator section 
+        MapGenerator mapGen = (MapGenerator)target; //this instances the MapGenerator as "mapGen" and does some more UI trolling idk, i think it adds the custom button in the mapGenerator section 
 
         if (DrawDefaultInspector()) //if "something happens"
         {
