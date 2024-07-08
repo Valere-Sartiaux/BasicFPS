@@ -41,9 +41,9 @@ public static class Noise //This creates a STATIC class called "Noise"
 
 
 
-        for (int x = 0; x < mapWidth; x++) //These for loops go through every cell of the 2d float array and assigns them a float value
+        for (int y = 0; y < mapLength; y++) //These for loops go through every cell of the 2d float array and assigns them a float value
         {
-            for (int y = 0; y < mapLength ; y++)
+            for (int x = 0; x < mapWidth ; x++)
             {
 
                 float amplitude = 1f;
@@ -81,11 +81,11 @@ public static class Noise //This creates a STATIC class called "Noise"
             }
         }
 
-        for (int x = 0; x < mapWidth; x++) //These for loops go through every cell of the 2d float array and assigns them a float value
+        for (int y = 0; y < mapLength; y++) //These for loops go through every cell of the 2d float array and assigns them a float value
         {
-            for (int y = 0; y < mapLength ; y++)
+            for (int x = 0; x < mapWidth ; x++)
             {
-                noiseMap[x,y] = Mathf.InverseLerp(maxNoiseHeight,minNoiseHeight, noiseMap[x,y]); //This interperlates the given numbers into a number between 0-1, if it isnt then the noise map values will just output white or black
+                noiseMap[x,y] = Mathf.InverseLerp(minNoiseHeight, maxNoiseHeight, noiseMap[x,y]); //This interperlates the given numbers into a number between 0-1, if it isnt then the noise map values will just output white or black
             }
         }
 

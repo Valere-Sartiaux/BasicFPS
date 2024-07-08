@@ -24,7 +24,7 @@ public class MapGenerator : MonoBehaviour //Monobehaviour is needed as it intera
     public float noiseScale; //this determines the density of the map
     public bool autoUpdate; //this determines of the map auto-updates when variables are changed
 
-    public enum DrawMode{NoiseMap, ColourMap}; //this creates a editor specific "mode" that you can change
+    public enum DrawMode{NoiseMap, ColourMap, MeshMap}; //this creates a editor specific "mode" that you can change
     public DrawMode drawMode; //this assigns the draw mode to a variable called "drawMode"
 
     public TerrainType[] regions; //creates a TerrainType object called "regions"
@@ -36,9 +36,9 @@ public class MapGenerator : MonoBehaviour //Monobehaviour is needed as it intera
 
         Color[] colourMap = new Color[mapWidth * mapLength]; //creates a colour map the size of the texture
 
-        for (int x = 0; x < mapWidth; x++ )
+        for (int y = 0; y < mapLength; y++ )
         {
-            for (int y = 0; y < mapLength; y++)
+            for (int x = 0; x < mapWidth; x++)
             {
                 float currentHeight = noiseMap[x, y]; 
 
@@ -63,6 +63,10 @@ public class MapGenerator : MonoBehaviour //Monobehaviour is needed as it intera
         else if (drawMode == DrawMode.ColourMap)
         {
             display.DrawTexture(TextureGenerator.TextureColourMap(colourMap, mapWidth, mapLength));
+        }
+        else if (drawMode == DrawMode.MeshMap)
+        {
+            display.DrawMeshMap(MeshGenerator.GenerateTerrainmesh(noiseMap), TextureGenerator.TextureColourMap(colourMap, mapWidth, mapLength));
         }
     }
 
