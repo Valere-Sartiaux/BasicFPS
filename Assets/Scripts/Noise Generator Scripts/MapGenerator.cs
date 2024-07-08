@@ -12,6 +12,10 @@ public class MapGenerator : MonoBehaviour //Monobehaviour is needed as it intera
     public int mapWidth; //this determines the width of the map
     public int mapLength; //this determines the length of the map
 
+    [Range(0f, 100f)]
+    public float mapHeight;
+    public AnimationCurve mapHeightCurve;
+
     [Range(0f, 25f)]
     public int octaves; //This determines the amount of times the values are put through the generator
 
@@ -66,7 +70,7 @@ public class MapGenerator : MonoBehaviour //Monobehaviour is needed as it intera
         }
         else if (drawMode == DrawMode.MeshMap)
         {
-            display.DrawMeshMap(MeshGenerator.GenerateTerrainmesh(noiseMap), TextureGenerator.TextureColourMap(colourMap, mapWidth, mapLength));
+            display.DrawMeshMap(MeshGenerator.GenerateTerrainmesh(noiseMap, mapHeight, mapHeightCurve), TextureGenerator.TextureColourMap(colourMap, mapWidth, mapLength));
         }
     }
 
@@ -88,6 +92,11 @@ public class MapGenerator : MonoBehaviour //Monobehaviour is needed as it intera
         {
             octaves = 1;
         }
+        if (mapHeight < 1)
+        {
+            mapHeight = 1;
+        }
+
         if (noiseScale <= 0) //This if statement checks if scale is 0 to avoid dividing by 0
         {
             noiseScale = 0.01f; //this sets the minimum value of scale to 0.00001

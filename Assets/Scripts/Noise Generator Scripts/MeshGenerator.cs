@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class MeshGenerator
 {
-    public static MeshData GenerateTerrainmesh(float[,] heightMap)
+    public static MeshData GenerateTerrainmesh(float[,] heightMap, float heightMultiplier, AnimationCurve heightCurve) //This function deals with generating the triangles in the mesh
     {
         int width = heightMap.GetLength(0);
         int length = heightMap.GetLength(1);
@@ -18,7 +18,7 @@ public class MeshGenerator
         {
             for (int x = 0; x < width; x++) 
             {
-                meshData.vertices[vertexIndex] = new Vector3(topLeftX+x, heightMap[x, y], topLeftZ-y);
+                meshData.vertices[vertexIndex] = new Vector3(topLeftX+x, heightCurve.Evaluate(heightMap[x, y]) * heightMultiplier, topLeftZ-y);
                 meshData.uvs[vertexIndex] = new Vector2(x / (float)width, y / (float)length);
                 if (x < width-1 && y < length-1) 
                 {
@@ -33,7 +33,7 @@ public class MeshGenerator
     }
 }
 
-public class MeshData
+public class MeshData //this class deals with the data stored inside the mesh and generating the meshes
 {
     public Vector3[] vertices;
     public int[] triangles;
@@ -41,7 +41,7 @@ public class MeshData
 
 
     int triangleIndex;
-    public MeshData(int meshWidth, int meshLength)
+    public MeshData(int meshWidth, int meshLength) //this creates all the vertices and uvs of the entire mesh
     {
         vertices = new Vector3[meshWidth * meshLength];
         uvs = new Vector2[meshWidth * meshLength];
@@ -50,7 +50,7 @@ public class MeshData
 
     }
 
-    public void AddTriangle(int a, int b, int c)
+    public void AddTriangle(int a, int b, int c) //this keeps track of the triangles inside of the mesh
     {
         triangles[triangleIndex] = a;
         triangles[triangleIndex+1] = b;
@@ -59,7 +59,7 @@ public class MeshData
         triangleIndex += 3;
     }
 
-    public Mesh CreateMesh()
+    public Mesh CreateMesh() // this creates the final mesh
     {
         Mesh mesh = new Mesh();
         mesh.vertices = vertices;
