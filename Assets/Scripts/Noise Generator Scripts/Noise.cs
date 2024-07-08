@@ -57,7 +57,7 @@ public static class Noise //This creates a STATIC class called "Noise"
                     float sampleX = (x-halfWidth) / scale * frequency + octaveOffsets[i].x; //This creates different sample locations for the perlin noise generator
                     float sampleY = (y-halfLength) / scale * frequency + octaveOffsets[i].y; //The higher the frequency, the further each point gets from one another, the octave
 
-                    float noiseValue = Mathf.PerlinNoise(sampleY, sampleX) * 2 - 1; //this creates a noise value based on the coordinates given, multiply by two and minus one to give use some negative numbers
+                    float noiseValue = Mathf.PerlinNoise(sampleX, sampleY) * 2 - 1; //this creates a noise value based on the coordinates given, multiply by two and minus one to give use some negative numbers
 
                     noiseHeight += noiseValue * amplitude;
 
@@ -85,7 +85,7 @@ public static class Noise //This creates a STATIC class called "Noise"
         {
             for (int y = 0; y < mapLength ; y++)
             {
-                noiseMap[x,y] = Mathf.InverseLerp(maxNoiseHeight, minNoiseHeight, noiseMap[x,y]); //This interperlates the given numbers into a number between 0-1, if it isnt then the noise map values will just output white or black
+                noiseMap[x,y] = Mathf.InverseLerp(maxNoiseHeight,minNoiseHeight, noiseMap[x,y]); //This interperlates the given numbers into a number between 0-1, if it isnt then the noise map values will just output white or black
             }
         }
 
