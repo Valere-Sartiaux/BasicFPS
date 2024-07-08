@@ -4,26 +4,29 @@ using UnityEngine;
 
 public class MeshGenerator
 {
-    public static MeshData GenerateTerrainmesh(float[,] heightMap, float heightMultiplier, AnimationCurve heightCurve) //This function deals with generating the triangles in the mesh
+    public static MeshData GenerateTerrainmesh(float[,] heightMap, float heightMultiplier, AnimationCurve heightCurve, int lOD) //This function deals with generating the triangles in the mesh
     {
         int width = heightMap.GetLength(0);
         int length = heightMap.GetLength(1);
         float topLeftX = (width-1) / -2f;
         float topLeftZ = (length-1) / 2f;
 
-        MeshData meshData = new MeshData (width, length);
+        int lODIncrement = (lOD == 0)?1:lOD*2;
+        int verticiesPerLine = (width-1)/lODIncrement +1;
+
+        MeshData meshData = new MeshData (verticiesPerLine, verticiesPerLine);
         int vertexIndex = 0;
 
-        for (int y = 0; y < length; y++)
+        for (int y = 0; y < length; y += lODIncrement)
         {
-            for (int x = 0; x < width; x++) 
+            for (int x = 0; x < width; x += lODIncrement) 
             {
                 meshData.vertices[vertexIndex] = new Vector3(topLeftX+x, heightCurve.Evaluate(heightMap[x, y]) * heightMultiplier, topLeftZ-y);
                 meshData.uvs[vertexIndex] = new Vector2(x / (float)width, y / (float)length);
                 if (x < width-1 && y < length-1) 
                 {
-                    meshData.AddTriangle(vertexIndex, vertexIndex + width + 1, vertexIndex + width);
-                    meshData.AddTriangle(vertexIndex + width + 1, vertexIndex, vertexIndex + 1);
+                    meshData.AddTriangle(vertexIndex, vertexIndex + verticiesPerLine + 1, vertexIndex + verticiesPerLine);
+                    meshData.AddTriangle(vertexIndex + verticiesPerLine + 1, vertexIndex, vertexIndex + 1);
                 }
                 vertexIndex++;
             }
