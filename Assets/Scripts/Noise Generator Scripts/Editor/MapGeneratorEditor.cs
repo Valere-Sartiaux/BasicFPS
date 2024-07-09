@@ -16,12 +16,12 @@ public class MapGeneratorEditor : Editor //EDITOR is needed to interact with the
         {
             if (mapGen.autoUpdate) //checks if the autoupdate is on
             {
-                mapGen.GenerateMap(); //executes the map generation again
+                mapGen.DrawMapInEditor(); //executes the map generation again
             }
         }
         if (GUILayout.Button("Execute Generator")) //if this button is pressed do stuff
         {
-            mapGen.GenerateMap(); //the thing it's doing
+            mapGen.DrawMapInEditor(); //the thing it's doing
         }
     }
 }
