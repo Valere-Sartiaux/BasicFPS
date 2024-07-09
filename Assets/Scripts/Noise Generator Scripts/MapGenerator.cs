@@ -35,16 +35,23 @@ public class MapGenerator : MonoBehaviour //Monobehaviour is needed as it intera
     public float lacunarity; //this does some weird shit idk
 
     public float noiseScale; //this determines the density of the map
+
+    public bool useFalloff;
     public bool autoUpdate; //this determines of the map auto-updates when variables are changed
 
-    public enum DrawMode { NoiseMap, ColourMap, MeshMap }; //this creates a editor specific "mode" that you can change
+    public enum DrawMode { NoiseMap, ColourMap, MeshMap, FalloffMap }; //this creates a editor specific "mode" that you can change
     public DrawMode drawMode; //this assigns the draw mode to a variable called "drawMode"
 
     public TerrainType[] regions; //creates a TerrainType object called "regions"
 
+    float[,] falloffMap;
+
     public UnityEngine.Vector2 offset; //this allows us to scroll through the generated map
 
-
+    void Awake()
+    {
+        falloffMap = FallOffMapGenerator.GenerateFallOffMap(chunkSize);
+    }
 
 
 
@@ -160,7 +167,22 @@ public class MapGenerator : MonoBehaviour //Monobehaviour is needed as it intera
         }
         else if (drawMode == DrawMode.MeshMap)
         {
-            display.DrawMeshMap(MeshGenerator.GenerateTerrainMesh(mapData.noiseMap, mapHeight, mapHeightCurve, levelOfDetailEditor), TextureGenerator.TextureColourMap(mapData.colourMap, chunkSize, chunkSize));
+            display.DrawMeshMap
+                (
+                MeshGenerator.GenerateTerrainMesh(mapData.noiseMap, mapHeight, mapHeightCurve, levelOfDetailEditor), TextureGenerator.TextureColourMap(mapData.colourMap, chunkSize, chunkSize));
+        }
+        else if (drawMode == DrawMode.FalloffMap)
+        {
+            display.DrawTexture
+                (
+                TextureGenerator.TextureNoiseMap
+                    (
+                    FallOffMapGenerator.GenerateFallOffMap
+                        (
+                            chunkSize
+                        )
+                    )
+                );
         }
     }
 
@@ -174,6 +196,10 @@ public class MapGenerator : MonoBehaviour //Monobehaviour is needed as it intera
         {
             for (int x = 0; x < chunkSize; x++)
             {
+                if (useFalloff)
+                {
+                    noiseMap[x,y] = Mathf.Clamp01(noiseMap[x, y] - falloffMap[x, y]);
+                }
                 float currentHeight = noiseMap[x, y]; 
 
                 for (int i = 0; i < regions.Length; i++) 
@@ -197,6 +223,9 @@ public class MapGenerator : MonoBehaviour //Monobehaviour is needed as it intera
 
     public void OnValidate() //this checks that values aren't too low as to cause math errors
     {
+
+        falloffMap = FallOffMapGenerator.GenerateFallOffMap(chunkSize);
+
         if (lacunarity < 0.1f)
         {
             lacunarity = 0.1f;

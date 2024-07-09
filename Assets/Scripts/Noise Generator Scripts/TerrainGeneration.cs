@@ -10,7 +10,7 @@ public class TerrainGeneration : MonoBehaviour
 
 
     public LODInfo[] detailAmounts;
-    public static float maxViewDistance = 500f; //max viewdistance
+    public static float maxViewDistance = 2000f; //max viewdistance
     public Transform playerCam; //stores the players transform
 
 
